@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>canvas</title>
+    <script type="text/javascript" src="zepto.min.js"></script>
+    <script type="text/javascript" src="digit.js"></script>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+</body>
+<script type="text/javascript">
+
+    $(function(){
+        var canvas=document.getElementById("canvas");
+        var cxt=canvas.getContext("2d");
+        canvas.width=1024;
+        canvas.height=768;
+        var maggin_top =60;
+        var margin_left=30;
+        var radius=4;
+        var endData=new Date(2016,4,9,20,20);
+        var shortCut=getTime();
+        var ball={x:400,y:400,r:4};
+        function getTime(){
+            var curTime=new Date();
+            var ret=endData.getTime()-curTime.getTime();
+            ret=Math.round(ret/1000);
+            return ret>=0? ret : 0;
+        }
+        render(cxt);
+        function render(cxt){
+            var hours=parseInt(shortCut/3600);
+            var min=parseInt((shortCut-hours*3600)/60);
+            var second=parseInt(shortCut%60);
+            cxt.clearRect(0,0,1024,768);
+            drawDiglt(margin_left,maggin_top,(parseInt(hours/10)),cxt);
+            drawDiglt(margin_left+15*(radius+1),maggin_top,parseInt(hours%10),cxt);
+            drawDiglt(margin_left+30*(radius+1),maggin_top,10,cxt);
+            drawDiglt(margin_left+39*(radius+1),maggin_top,parseInt(min/10),cxt);
+            drawDiglt(margin_left+54*(radius+1),maggin_top,parseInt(min%10),cxt);
+            drawDiglt(margin_left+69*(radius+1),maggin_top,10,cxt);
+            drawDiglt(margin_left+78*(radius+1),maggin_top,parseInt(second/10),cxt);
+            drawDiglt(margin_left+93*(radius+1),maggin_top,parseInt(second%10),cxt);
+
+//            cxt.clearRect(0,0,1024,768);
+            cxt.fillStyle=color[0];
+            cxt.beginPath();
+            cxt.arc(ball.x,ball.y,ball.r,0,2*Math.PI,false);
+            cxt.fill();
+        }
+        function drawDiglt(x,y,num,cxt){
+            for(var i=0;i<digit[num].length;i++){
+                for(var j=0;j<digit[num][i].length;j++){
+                    if(digit[num][i][j]==1){
+                        cxt.beginPath();
+                        cxt.arc(x+j*2*(radius+1)+(radius+1),y+i*2*(radius+1)+(radius+1),radius,0,2*Math.PI,false);
+                        cxt.fillStyle="blue";
+                        cxt.fill();
+                    }
+                }
+            }
+        }
+        setInterval(
+                function(){
+                    render(cxt);
+                    update();
+                },50
+        );
+//        每次更新画面
+        function update(){
+            var nextST=getTime();
+            var hours=parseInt(shortCut/3600);
+            var min=parseInt((shortCut-hours*3600)/60);
+            var second=parseInt(shortCut%60);
+            var hoursN=parseInt(nextST/3600);
+            var minN=parseInt((nextST-hours*3600)/60);
+            var secondN=parseInt(nextST%60);
+            ball.x +=ball.vx;
+            ball.y +=ball.vy;
+            ball.y +=ball.g;
+            if(second !=secondN){
+                shortCut=nextST;
+                if(parseInt(hours%10) !=parseInt(hoursN%10)){
+                    addBall()
+                }
+
+            }
+        }
+
+
+        function addBall(x,y,num){
+
+
+        }
+        var  color=["#ff6000","#c0ff00","#3cfef1","#3ccefe","#3c53fe","#a03cfe","#fe3cce","#fe3c6e","#","#"];
+
+
+
+
+
+    });
+</script>
+</html>
