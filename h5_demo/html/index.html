@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta content="telephone=no,email=no" name="format-detection">
+    <meta name="author" content="ata">
+    <meta name="description" content="">
+    <meta name="format-detection" content="telephone=no">
+    <title>四川保险行业车险服务满意度有奖调查</title>
+    <script type="text/javascript">
+        var deviceWidth = document.documentElement.clientWidth;
+        if (deviceWidth > 750) deviceWidth = 750;
+        document.documentElement.style.fontSize = deviceWidth / 7.5 + 'px';
+    </script>
+    <link type="text/css" href="../css/main.css" rel="stylesheet">
+</head>
+<body>
+<!--loading-->
+<div class="loading">
+    <p class="logo"><img src="../images/logo.png"></p>
+    <p class="tips">正在加载中...</p>
+    <p class="progress"><span></span></p>
+    <p class="bar_number"><em>0</em>%</p>
+</div>
+<!--内容-->
+<section>
+dadada
+</section>
+<script src="../js/zepto.min.js"></script>
+<script>
+    var path='../',
+    loaders = {
+        img:[
+            {src: path + "images/begin_btn.png"},
+            {src: path + "images/bg.jpg"},
+            {src: path + "images/bg_index.jpg"},
+            {src: path + "images/bg_last.jpg"},
+            {src: path + "images/boy_default.png"},
+            {src: path + "images/boy_has.png"},
+            {src: path + "images/choice_default.png"},
+            {src: path + "images/choice_has.png"},
+            {src: path + "images/close.png"},
+            {src: path + "images/close_default.png"},
+            {src: path + "images/girl_has.png"},
+            {src: path + "images/girl_default.png"},
+            {src: path + "images/hb_sdt.png"},
+            {src: path + "images/hb_yw.png"},
+            {src: path + "images/hb_zqf.png"},
+            {src: path + "images/next_btn.png"},
+            {src: path + "images/submit_btn.png"},
+            {src: path + "images/logo.png"}
+        ],
+        audio:[
+            /*{src: path + "images/audio.mp3"}*/
+        ]
+    };
+    /*资源加载-;begin*/
+    function loadSprite(src, callback) {
+        var sprite = new Image();
+        sprite.onload = callback;
+        sprite.src = src;
+    }
+    function loadAudio(src, callback) {
+        var audio = new Audio(src);
+        audio.onloadedmetadata = callback;
+        audio.src = src;
+    }
+    var imageLoadCount = 0,
+        audioLoadCount = 0,
+        comp1 = loaders.img.length,
+        comp2 = loaders.audio.length;
+    $.each(loaders.img, function(index,item) {
+        loadSprite(item.src,function(){ imageLoadCount++;})
+    });
+    $.each(loaders.audio, function(index,item) {
+        loadAudio(item.src,function(){ audioLoadCount++;})
+    });
+    /*加载图片超时*/
+    var timer1=setTimeout(function(){
+        clearInterval(complete);
+        $(".loading").remove();
+    },8500);
+    var complete=setInterval(function() {
+        if(imageLoadCount == comp1 && audioLoadCount == comp2){
+            $(".progress span").css("width","100%");
+            $(".loading p").find("em").html(100);
+            clearInterval(complete);
+            $(".loading").remove();
+            clearTimeout(timer1);
+        }
+        else{
+            var num = parseInt((imageLoadCount + audioLoadCount)*100/(comp1 + comp2));
+            if(num<100){
+                $(".loading p").find("em").html(num);
+                $(".progress span").css("width",num+"%");
+            }
+        }
+    },100);
+    /*资源加载-;end*/
+</script>
+</body>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script type="text/javascript" charset="utf-8">
+    $(function () {
+        var signPackage = {};
+        $.post('http://wx.hxpic.com/wxshare_cdfer.php', {url: window.location.href}, function (response) {
+            signPackage.appId     = response.appId;
+            signPackage.timestamp = response.timestamp;
+            signPackage.nonceStr  = response.nonceStr;
+            signPackage.signature = response.signature;
+            wxShare();
+        }, 'json');
+        function wxShare() {
+            wx.config({
+                appId    : signPackage.appId,
+                timestamp: signPackage.timestamp,
+                nonceStr : signPackage.nonceStr,
+                signature: signPackage.signature,
+                jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareWeibo', 'onMenuShareQQ', 'hideOptionMenu', 'showOptionMenu', 'hideMenuItems', 'showMenuItems', 'hideAllNonBaseMenuItem', 'showAllNonBaseMenuItem']
+            });
+            wx.ready(function () {
+                var shareData = {
+                    title : '2017四川鞋业十大影响力系列评选活动',
+                    desc  : '女鞋之都十五年，一带一路再出发',
+                    link  : window.location.href,
+                    imgUrl: 'http://wx.hxpic.com/spe/o2o/ScFootwear/images/share.jpg'
+                };
+                wx.onMenuShareAppMessage(shareData);
+                wx.onMenuShareTimeline(shareData);
+            });
+        }
+    });
+</script>
+</html>
